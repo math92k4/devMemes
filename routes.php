@@ -6,10 +6,9 @@ require_once __DIR__.'/router.php';
 // ##################################################
 // ##################################################
 
-// Static GET
-// In the URL -> http://localhost
-// The output -> Index
 get('/', 'views/index.php');
+get('/sign-up', 'views/sign_up.php');
+get('/sign-in', 'views/sign_in.php');
 
 // get('/item/$item_id', 'views/item.php');
 
@@ -17,7 +16,9 @@ get('/', 'views/index.php');
 
 // get('/$gender/shoes/$brand/$size', 'views/product');
 
-
+post('/users', 'api/post_user.php');
+post('/posts', 'api/post_post.php');
+post('/sessions', 'api/post_session.php');
 
 
 

@@ -1,11 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap');
+
 :root {
     --main-font-fam: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+    --logo-font-fam: 'Bree Serif', serif;
     --main-font-clr: #ffffff;
     --secondary-font-clr: rgba(255,255,255, .65);
     --highlight-clr: #00B8FF; 
     --main-font-size: 1rem;
     --small-font-size: .875rem;
     --medium-font-size: 1.125rem;
+    --xl-font-size: 5rem;
     --bg-clr: #000000;
     --post-bg-clr: #222222;
     --aside-comp-clr: #111111;
@@ -24,12 +28,16 @@
     font-family: var(--main-font-fam);
     font-size: var(--main-font-size);
     line-height: 1.2;
+    font-weight: 500;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 body {
     background-color: var(--bg-clr);
     height: 100vh;
+}
+main {
+    height: 100%;
 }
 li {
     list-style: none;
@@ -40,6 +48,9 @@ a, button {
     background: transparent;
     border: 0;
     cursor: pointer;
+    font-weight: 700;
+}
+h2 {
     font-weight: 700;
 }
 input {
@@ -66,8 +77,14 @@ span {
 
 
 /* HEADER */
-#main-header {
+#main-header:not(.sign-page #main-header) {
     border-bottom: 1px solid var(--line-clr);
+    background-color: black;
+}
+#main-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 #main-header nav {
     max-width: 1700px;
@@ -77,18 +94,21 @@ span {
     padding: 0.2rem 1.375rem;
     height: 51px;
 }
+
 #main-header ul {
     display: flex;
     align-items: center;
 }
 #logo {
+    font-family: var(--logo-font-fam);
     font-size: 2.75rem;
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -0.7rem;
+    letter-spacing: -0.76rem;
     color: white;
     display: block;
     width: 3.5rem;
+    transform: translateY(-3px);
 }
 #search-bar-container {
     margin-left: 1rem;
@@ -107,6 +127,7 @@ span {
     display: flex;
 }
 #content main {
+    height: 100%;
     width: 640px;
     padding: 1.25rem .875rem 0 0;
 }
@@ -116,12 +137,17 @@ span {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: sticky;
+    top: 52px;
     height: calc(100vh - 52px);
     border-left: 1px solid var(--line-clr);
 
 }
 
 /* POST */
+.posts-container article:not(:nth-child(1)) {
+    margin-top: 1.25rem;
+}
 .post {
     background-color: var(--post-bg-clr);
     border-radius: var(--main-radius);
@@ -227,6 +253,64 @@ aside .alias {
 aside .name {
     color: var(--secondary-font-clr);
     font-weight: 500;
+}
+
+/* GRADIENT IMAGE BG */
+.bg-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100vh;
+}
+.bg-gradient::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(38,38,38,0.7) 0%, rgba(38,38,38,0.1) 100%);
+}
+.bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+/* SIGN (in/up) FORM */
+.sign-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 51px);
+    flex-direction: column;
+}
+.sign-form-container h1,
+.sign-form-container h2 {
+    font-family: var(--logo-font-fam);
+    font-size: var(--xl-font-size);
+    margin-bottom: 3rem;
+    font-weight: 700;
+}
+.sign-form {
+    display: grid;
+    grid-gap: .6rem;
+    width: 380px;
+}
+.sign-form input {
+    color: black;
+    padding: .8rem .7rem;
+    width: 100%;
+    border-radius: .7rem;
+}
+.sign-form button {
+    background-color: var(--highlight-clr);
+    padding: .8rem;
+    color: black;
+    border-radius: var(--main-radius);
 }
 
 /* FOOTER */
