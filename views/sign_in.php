@@ -1,10 +1,13 @@
 <?php
+isset($_SESSION['session']) ? header('Location: /') : $session = false;
 $page_title = 'Sign up | devmemes';
 $body_cls = 'sign-page';
 require_once __DIR__.'/templates/header.php'; 
 ?>
+
 <main>
     <?php require_once __DIR__.'/templates/main_nav.php' ?>
+    <a class="sign-up" href="/sign-up">Sign up</a>
     <div class="bg-gradient">
         <img class="bg-image" src="/public/images/bg.jpg" alt="Cute little meme dog">
     </div>
@@ -13,8 +16,7 @@ require_once __DIR__.'/templates/header.php';
         <form class="sign-form" action="/session" method="POST">
             <input type="email" name="email" required placeholder="Email">
             <input type="password" name="password" required placeholder="Password">
-            <p></p>
-            <button>Sign in</button>
+            <button onclick="formValidation( postSession )">Sign in</button>
         </form>
     </div>
 </main>

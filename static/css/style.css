@@ -5,7 +5,8 @@
     --logo-font-fam: 'Bree Serif', serif;
     --main-font-clr: #ffffff;
     --secondary-font-clr: rgba(255,255,255, .65);
-    --highlight-clr: #00B8FF; 
+    --highlight-clr: #00B8FF;
+    --attraction-clr: #00CF35;
     --main-font-size: 1rem;
     --small-font-size: .875rem;
     --medium-font-size: 1.125rem;
@@ -118,6 +119,28 @@ span {
     background-color: var(--input-unfocus);
     border-radius: var(--main-radius);
     padding: 0.475rem;
+}
+#main-header .sign-in{
+    margin-right: .6rem;
+}
+a.sign-up, a.sign-in {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--bg-clr);
+    border-radius: var(--main-radius);
+    background-color: var(--highlight-clr);
+    padding: .525rem .8rem;
+    ;
+}
+a.sign-in {
+    background-color: var(--attraction-clr);
+}
+.sign-page .sign-in,
+.sign-page .sign-up {
+    position: absolute;
+    z-index: 20;
+    top: .45rem;
+    right: 1.375rem;
 }
 
 /* MAIN CONTENT */
@@ -307,6 +330,7 @@ aside .name {
     border-radius: .7rem;
 }
 .sign-form button {
+    margin-top: 1.5rem;
     background-color: var(--highlight-clr);
     padding: .8rem;
     color: black;

@@ -14,3 +14,7 @@ function _respond_html($file_to_render, $status=200) {
     exit();
 }
 
+function _session() {
+    if ( !isset($_SESSION['session']) ) return false;
+    return $_SESSION['session'];
+}

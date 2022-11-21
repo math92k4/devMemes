@@ -1,5 +1,6 @@
 <?php
-print_r($_SESSION['session']);
+$session = isset($_SESSION['session']) ? $_SESSION['session'] : false;
+$spa = true;
 require_once __DIR__.'/templates/header.php';
 require_once __DIR__.'/templates/main_nav.php';
 ?>
