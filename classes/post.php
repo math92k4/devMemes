@@ -1,12 +1,14 @@
 <?php
-require_once __DIR__.'/surreal_conn.php';
-require_once __DIR__.'/db_config.php';
+require_once __DIR__.'/utils.php';
+require_once __DIR__.'/image.php';
 
-class Post implements DbConfig {
+class Post extends Utils {
 
     private $text;
     private $image;
-    private $tags;
+    private $user_id;
+    private $id;
+    private $array;
 
 
     // CONSTS FOR VALIDATION
@@ -24,9 +26,11 @@ class Post implements DbConfig {
 
     // DATA VALIDATION
     private function validate_text($text) {
+        if ( !isset($text) ) self::client_err('Please provide a text');
         $text = trim($text);
-        if ( strlen($text) < self::TEXT_MIN_LENGTH ) return;
-        if ( strlen($text) > self::TEXT_MAX_LENGTH ) return;
+        $err_message = 'Invalid text';
+        if ( strlen($text) < self::TEXT_MIN_LENGTH ) self::client_err($err_message);
+        if ( strlen($text) > self::TEXT_MAX_LENGTH ) self::client_err($err_message);
         return $text;
     }
 
@@ -41,14 +45,42 @@ class Post implements DbConfig {
         return $this->text;
     }
 
+    public function array() {
+        return $this->array;
+    }
+
 
     // CREATE NEW POST IN DB
-    public function create() {
-        if ( !self::is_valid_text() ) return;
+    public function create() :void {
+        // Secure that required globals are set (Some are optional)
+        if ( !isset($_SESSION['user_id']) ) self::client_err('Unauthorized attempt', 401);
+        if ( !isset($_POST['text']) && !isset($_FILES['image']) ) self::client_err('Please provide a text or image');
 
-        $this->text = $_POST['text'];
-        return true;
+        // Validate and set values
+        if ( isset($_POST['text']) ) $this->text = self::validate_text($_POST['text']);
+        if ( isset($_FILES['image']) ) {
+            $image = new Image($_FILES['image']);
+            $this->image = $image->file_name();
+        }
+        $this->user_id = $_SESSION['user_id'];
+
+        $db = new PreDO();
+        $q = $db->prepare('CALL INSERT_post (:user_id, :text, :image)');
+        $q->bindValue(':user_id', $this->user_id);
+        $q->bindValue(':text', $this->text);
+        $q->bindValue(':image', $this->image);
+        $q->execute();
+        $post_array = $q->fetch();
+        $this->id = $post_array['post_id'];
+        $this->array = [ $post_array ];
     }
-    
 
+
+    public function get_ten_newest($offset = 0) {
+        $db = new PreDO();
+        $q = $db->prepare('CALL SELECT_post_chunk (:offset)');
+        $q->bindValue(':offset', $offset);
+        $q->execute();
+        $this->array = $q->fetchAll();
+    }
 }

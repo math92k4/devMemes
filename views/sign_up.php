@@ -1,5 +1,9 @@
 <?php
-isset($_SESSION['session']) ? header('Location: /') : $session = false;
+if ( $_SESSION ) {
+    header('Location: /');
+    exit();
+}
+
 $page_title = 'Sign up | devmemes';
 $body_cls = 'sign-page';
 require_once __DIR__.'/templates/header.php'; 

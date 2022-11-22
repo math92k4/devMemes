@@ -2,14 +2,32 @@
     <nav>
         <ul>
             <li><a id="logo" href="/">dm</a></li>
-            <li id="search-bar-container"><input id="search-bar" type="text"></li>
+            <li id="search-bar-container">
+                <label for="search-bar"><?php require_once __DIR__.'/../../public/images/search.svg' ?></label>
+                <input id="search-bar" type="text">
+            </li>
         </ul>
         <ul>
-            <?php if ( $session ): ?>
-            <li>Home</li>
-            <li>Profile</li>
-            <li>User</li>
-            <?php elseif ( isset($spa) && $spa ): ?>
+            <?php if ( $_SESSION ): ?>
+
+            <li>
+                <a class="icon home" href="/">
+                    <?php require_once __DIR__.'/../../public/images/home.svg' ?>
+                </a>
+            </li>
+
+            <li>
+                <a class="icon user" href="/user/<?= $_SESSION['user_alias'] ?>/settings">
+                    <?php require_once __DIR__.'/../../public/images/user.svg' ?>
+                </a>
+            </li>
+
+            <li>
+                <button onclick="showModal('.post-modal')" class="icon pen">
+                    <?php require_once __DIR__.'/../../public/images/pen.svg' ?>
+                </button>
+            </li>
+            <?php elseif ( isset($spa) ): ?>
             <li><a class="sign-in" href="/sign-in" onclick="spa()">Sign in</a></li>
             <li><a class="sign-up" href="/sign-up" onclick="spa()">Sign up</a></li>
             <?php endif; ?>

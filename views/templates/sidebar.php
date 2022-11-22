@@ -17,5 +17,10 @@
             
         </article>
     </aside>
-    <footer><a href="https://github.com/math92k4/devMemes" target="_blank">GitHub</a></footer>
+    <footer>
+        <a href="https://github.com/math92k4/devMemes" target="_blank">GitHub</a>
+        <?php if ($_SESSION): ?>
+        <a href="/sign-out">Sign out</a>
+        <?php endif; ?>
+    </footer>
 </div>
