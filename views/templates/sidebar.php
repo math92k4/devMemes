@@ -14,7 +14,6 @@
                     </form>
                 </li>
             </ul>
-            
         </article>
     </aside>
     <footer>

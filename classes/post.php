@@ -23,6 +23,8 @@ class Post extends Utils {
 
     private const POST_ID_REGEX = '/^post:[a-zA-z0-9]{20}$/';
 
+    private const ID_REGEX = '/^[1-9][0-9]*$/';
+
 
     // DATA VALIDATION
     private function validate_text($text) {
@@ -32,6 +34,12 @@ class Post extends Utils {
         if ( strlen($text) < self::TEXT_MIN_LENGTH ) self::client_err($err_message);
         if ( strlen($text) > self::TEXT_MAX_LENGTH ) self::client_err($err_message);
         return $text;
+    }
+
+    private function validate_id($id) {
+        if ( !isset($id) ) self::client_err('No content', 204);
+        if ( !preg_match(self::ID_REGEX, $id) ) self::client_err('No content', 204);
+        return $id;
     }
 
 
@@ -75,12 +83,45 @@ class Post extends Utils {
         $this->array = [ $post_array ];
     }
 
-
-    public function get_ten_newest($offset = 0) {
+    public function get_ten_newest($offset = 0) :void {
         $db = new PreDO();
         $q = $db->prepare('CALL SELECT_post_chunk (:offset)');
         $q->bindValue(':offset', $offset);
         $q->execute();
         $this->array = $q->fetchAll();
+    }
+
+    public function delete($id) {
+        $this->id = self::validate_id($id);
+        $this->user_id = $_SESSION['user_id'];
+        $db = new PreDO();
+        $q = $db->prepare('CALL DELETE_post (:post_id, :user_id)');
+        $q->bindValue(':post_id', $this->id);
+        $q->bindValue(':user_id', $this->user_id);
+        $q->execute();
+        $image_name = $q->fetch();
+        if ( $q->rowCount() === 0 ) self::client_err("No content", 204);
+    }
+
+    public function like($id) {
+        $this->id = self::validate_id($id);
+        $this->liker_id = $_SESSION['user_id'];
+        $db = new PreDO();
+        $q = $db->prepare('CALL INSERT_like (:post_id, :user_id)');
+        $q->bindValue(':post_id', $this->id);
+        $q->bindValue(':user_id', $this->liker_id);
+        $q->execute();
+        if ( $q->rowCount() === 0 ) self::client_err("No content", 204);
+    }
+
+    public function unlike($id) {
+        $this->id = self::validate_id($id);
+        $this->liker_id = $_SESSION['user_id'];
+        $db = new PreDO();
+        $q = $db->prepare('CALL DELETE_like (:post_id, :user_id)');
+        $q->bindValue(':post_id', $this->id);
+        $q->bindValue(':user_id', $this->liker_id);
+        $q->execute();
+        if ( $q->rowCount() === 0 ) self::client_err("No content", 204);
     }
 }

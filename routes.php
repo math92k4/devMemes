@@ -23,6 +23,7 @@ get('/user/$user_alias/settings', 'views/user_settings.php');
 post('/users', 'api/post_users.php');
 post('/posts', 'api/post_posts.php');
 post('/sessions', 'api/post_sessions.php');
+delete('/posts/$post_id', 'api/delete_posts.php');
 
 
 

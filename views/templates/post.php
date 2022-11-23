@@ -1,21 +1,29 @@
-<article>
+<article id="post-<?php out($post['post_id']) ?>">
     <img src="/public/images/uploads/<?php out($post['user_image']) ?>">
     <div class="post">
+
         <div class="top-bar">
             <div>
-                <a href="/user/<?php out($post['user_alias']) ?>" onclick="spa()">
+                <a class="alias" href="/user/<?php out($post['user_alias']) ?>" onclick="spa()">
                     <?php out($post['user_alias']) ?>
                 </a>
-                <form action="/follow">
-                    <button>Follow</button>
+                <?php if ( $_SESSION ): ?>
+                <form>
+                    <button onclick="postFollow()">Follow</button>
                 </form>
+                <?php endif; ?>
             </div>
+
+            <?php if ( $_SESSION && $_SESSION['user_id'] === $post['fk_user_id'] ): ?>
             <details>
                 <summary>···</summary>
-                <p>test</p>
+                <button onclick="deletePost(<?php out($post['post_id']) ?>)">delete</button>
             </details>
+            <?php endif; ?>
+
             <div class="fold"></div>
         </div>
+
         <div class="post-content">
 
             <?php if ( $post['post_image'] ): ?>
@@ -28,8 +36,15 @@
 
         </div>
         <div class="bottom-bar">
-            <p class="upvotes"><span>12</span> upvotes</p>
-            <div class="actions">heart</div>
+            <p class="likes"><span>12</span> likes</p>
+            <?php if ( $_SESSION ): ?>
+            <div class="actions">
+                <form>
+                    <input type="text" name="post_id" value="<?php out($post['post_id']) ?>" hidden>
+                    <button onclick="postLike()">Like</button>
+                </form>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </article>

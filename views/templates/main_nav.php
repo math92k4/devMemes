@@ -17,7 +17,7 @@
             </li>
 
             <li>
-                <a class="icon user" href="/user/<?= $_SESSION['user_alias'] ?>/settings">
+                <a class="icon user" href="/user/<?= $_SESSION['user_alias'] ?>">
                     <?php require_once __DIR__.'/../../public/images/user.svg' ?>
                 </a>
             </li>
@@ -28,8 +28,8 @@
                 </button>
             </li>
             <?php elseif ( isset($spa) ): ?>
-            <li><a class="sign-in" href="/sign-in" onclick="spa()">Sign in</a></li>
-            <li><a class="sign-up" href="/sign-up" onclick="spa()">Sign up</a></li>
+            <li><a class="sign-in" href="/sign-in">Sign in</a></li>
+            <li><a class="sign-up" href="/sign-up">Sign up</a></li>
             <?php endif; ?>
         </ul>
     </nav>
