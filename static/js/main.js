@@ -110,13 +110,8 @@ async function postLike() {
 }
 
 async function deleteLike(likeId) {
-  event.preventDefault();
-  const form = event.target.form;
-  const postId = form.post_id.value;
-
-  const res = await fetch("/likes", {
+  const res = await fetch(`/likes/${likeId}`, {
     method: "DELETE",
-    body: new FormData(form),
   });
 
   if (res.status == 401) {
@@ -131,7 +126,7 @@ async function deleteLike(likeId) {
 
   const likesElm = document.querySelector(`#post-${postId} .likes span`);
   const likes = parseInt(likesElm.textContent);
-  likesElm.textContent = likes + 1;
+  likesElm.textContent = likes - 1;
 }
 
 //####################

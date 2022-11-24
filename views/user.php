@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__.'/../_x.php';
 require_once __DIR__.'/../classes/post.php';
+require_once __DIR__.'/../classes/user.php';
+
 _validate_session();
 $spa = true;
 $page_title = $user_alias;
