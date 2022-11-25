@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__.'/../_x.php';
-require_once __DIR__.'/../classes/post.php';
-require_once __DIR__.'/../classes/user.php';
 
 _validate_session();
 $spa = true;
@@ -11,21 +9,21 @@ require_once __DIR__.'/templates/main_nav.php';
 ?>
 
 <div id="content">
-    <main class="posts-container">
-
+    <main>
         <?php
-        try {
-        $post = new Post();
-        $post->get_ten_newest();
-
-        } catch (Exception $ex) {
-            echo $ex;
-        }
-        foreach($post->array() as $post) {
-            require __DIR__.'/templates/post.php';
+        $user = _get_user_by_alias($user_alias);
+        if ($user) {
+            require_once __DIR__.'/templates/user_profile.php';
+            echo '<div class="posts-container">';
+                $posts = _get_posts_by_alias($user_alias);
+                foreach($posts as $post) {
+                    require __DIR__.'/templates/post.php';
+                }
+            echo '</div>';
+        } else {
+        echo '<h2>Whoops... This user do not exist.</h2>';
         }
         ?>
-
     </main>
     <?php require_once __DIR__.'/templates/sidebar.php'; ?>
 </div>

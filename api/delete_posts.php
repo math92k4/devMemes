@@ -1,20 +1,23 @@
 <?php
 require_once __DIR__.'/../_x.php';
-require_once __DIR__.'/../classes/post.php';
 
 _validate_session();
 if ( !$_SESSION ) _respond('Unauthorized attempt', 401);
+$user_id = $_SESSION['user_id'];
+$post_id = _validate_id($post_id);
 
 try {
-    $post = new Post();
-    $post->delete($post_id);
-    _respond('Post deleted', 200);
-
-} catch (ClientErr $err) {
-    _respond($err->text(), $err->code());
+    $db = new DB();
+    $q = $db->prepare('CALL DELETE_post (:post_id, :user_id)');
+    $q->bindValue(':post_id', $post_id);
+    $q->bindValue(':user_id', $user_id);
+    $q->execute();
+    if ($q->rowCount() === 0) _respond('No content', 204);
+    $image = $q->fetch()['post_image'];
 
 } catch (Exception $ex) {
-    if (str_contains($ex, 'email')) _respond('Email already registered', 400);
-    if (str_contains($ex, 'alias')) _respond('Alias already registered', 400);
-    _respond($ex, 500);
+    _respond('Server error', 500);
 }
+
+if ( $image ) _delete_image($image);
+_respond('Post deleted', 200);

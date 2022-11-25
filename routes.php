@@ -32,5 +32,5 @@ delete('/posts/$post_id', 'api/delete_posts.php');
 // post('/item', 'apis/create_item.php');
 
 
-
+get('/500', 'views/500.php');
 any('/404', 'views/404.php');

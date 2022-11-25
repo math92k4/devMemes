@@ -267,6 +267,9 @@ a.sign-in {
     justify-content: space-between;
     padding: 2.5rem 1.25rem .75rem 1rem;
 }
+.post .bottom-bar button {
+    font-size: var(--small-font-size);
+}
 .post .likes {
     font-weight: 700;
     color: var(--secondary-font-clr);
@@ -289,7 +292,7 @@ a.sign-in {
     height: 1.05rem;
     background-color: var(--input-unfocus);
     border-radius: 0 0 0 5px;
-    transition: transform .25s;
+    transition: transform .2s;
     transform: translate(100%, -100%);
 }
 .post .fold::after {
@@ -300,7 +303,7 @@ a.sign-in {
     width: 1.6rem;
     height: 1.6rem;
     transform: rotate(45deg) translate(-.8rem, -.8rem);
-    transition: transform .25s;
+    transition: transform .2s;
     background-color: var(--bg-clr);
 }
 .post:hover .fold::before {
@@ -336,9 +339,18 @@ aside li {
 aside .alias {
     font-weight: 700;
 }
-aside .name {
+aside .likes {
     color: var(--secondary-font-clr);
     font-weight: 500;
+}
+aside a {
+    display: flex;
+    align-items: center;
+}
+aside img {
+    width: 3rem;
+    height: 3rem;
+    margin-right: .5rem;
 }
 
 /* GRADIENT IMAGE BG */
@@ -404,6 +416,28 @@ aside .name {
     width: auto;
     background-color: var(--line-clr);
     color: var(--main-font-clr);
+}
+
+
+/* User profile */
+.user-profile {
+    margin-bottom: 4rem;
+    border-radius: var(--main-radius);
+    overflow: hidden;
+    background-color: var(--post-bg-clr);
+}
+.user-profile img {
+    height: 20rem;
+    object-fit: cover;
+    border-radius: 0;
+}
+.user-profile div {
+    margin: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+}
+.user-profile button {
+    font-size: var(--small-font-size)
 }
 
 /* Modals */

@@ -43,22 +43,13 @@ class Post extends Utils {
     }
 
 
-    // COMBINED SETTERS AND GETTERS
-    public function text($text = '') {
-        if ( !$text ) return $this->text;
-
-        $valid_text = self::validate_text($text);
-        if ( !$valid_text ) return;
-        $this->text = $valid_text;
-        return $this->text;
-    }
-
+    //GETTERS
     public function array() {
         return $this->array;
     }
 
 
-    // CREATE NEW POST IN DB
+    //DB METHODS
     public function create() :void {
         // Secure that required globals are set (Some are optional)
         if ( !isset($_SESSION['user_id']) ) self::client_err('Unauthorized attempt', 401);
@@ -83,14 +74,6 @@ class Post extends Utils {
         $this->array = [ $post_array ];
     }
 
-    public function get_ten_newest($offset = 0) :void {
-        $db = new PreDO();
-        $q = $db->prepare('CALL SELECT_post_chunk (:offset)');
-        $q->bindValue(':offset', $offset);
-        $q->execute();
-        $this->array = $q->fetchAll();
-    }
-
     public function delete($id) {
         $this->id = self::validate_id($id);
         $this->user_id = $_SESSION['user_id'];
@@ -103,8 +86,8 @@ class Post extends Utils {
         if ( $q->rowCount() === 0 ) self::client_err("No content", 204);
     }
 
-    public function like($id) {
-        $this->id = self::validate_id($id);
+    public function like() {
+        $this->id = self::validate_id($_POST['post_id']);
         $this->liker_id = $_SESSION['user_id'];
         $db = new PreDO();
         $q = $db->prepare('CALL INSERT_like (:post_id, :user_id)');
@@ -114,8 +97,8 @@ class Post extends Utils {
         if ( $q->rowCount() === 0 ) self::client_err("No content", 204);
     }
 
-    public function unlike($id) {
-        $this->id = self::validate_id($id);
+    public function unlike() {
+        $this->id = self::validate_id($_POST['post_id']);
         $this->liker_id = $_SESSION['user_id'];
         $db = new PreDO();
         $q = $db->prepare('CALL DELETE_like (:post_id, :user_id)');
@@ -123,5 +106,13 @@ class Post extends Utils {
         $q->bindValue(':user_id', $this->liker_id);
         $q->execute();
         if ( $q->rowCount() === 0 ) self::client_err("No content", 204);
+    }
+
+    public function get_ten_newest($offset = 0) :void {
+        $db = new PreDO();
+        $q = $db->prepare('CALL SELECT_post_chunk (:offset)');
+        $q->bindValue(':offset', $offset);
+        $q->execute();
+        $this->array = $q->fetchAll();
     }
 }

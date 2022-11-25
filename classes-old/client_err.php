@@ -2,6 +2,7 @@
 class ClientErr extends Exception {
     protected $message;
     protected $response_code;
+    protected $bypass;
 
     public function __construct($message, $response_code = 400) {
         $this->message = $message;
@@ -13,5 +14,8 @@ class ClientErr extends Exception {
     }
     public function code() {
         return $this->response_code;
+    }
+    public function bypass($bool) {
+        $this->bypass = $bool;
     }
 }

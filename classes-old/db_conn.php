@@ -14,7 +14,7 @@ class PreDO extends PDO {
             
         // Catch PDOException and convert it to a regular Ex
         } catch (PDOException $ex) {
-            throw new Excetion($ex);
+            throw new Exception($ex);
         }
     }
 }

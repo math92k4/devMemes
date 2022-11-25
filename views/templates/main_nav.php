@@ -8,25 +8,24 @@
             </li>
         </ul>
         <ul>
-            <?php if ( $_SESSION ): ?>
 
+            <?php if ( $_SESSION ): ?>
             <li>
                 <a class="icon home" href="/">
                     <?php require_once __DIR__.'/../../public/images/home.svg' ?>
                 </a>
             </li>
-
             <li>
                 <a class="icon user" href="/user/<?= $_SESSION['user_alias'] ?>">
                     <?php require_once __DIR__.'/../../public/images/user.svg' ?>
                 </a>
             </li>
-
             <li>
                 <button onclick="showModal('.post-modal')" class="icon pen">
                     <?php require_once __DIR__.'/../../public/images/pen.svg' ?>
                 </button>
             </li>
+
             <?php elseif ( isset($spa) ): ?>
             <li><a class="sign-in" href="/sign-in">Sign in</a></li>
             <li><a class="sign-up" href="/sign-up">Sign up</a></li>

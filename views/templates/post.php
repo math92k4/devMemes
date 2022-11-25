@@ -7,13 +7,13 @@
                 <a class="alias" href="/user/<?php out($post['user_alias']) ?>" onclick="spa()">
                     <?php out($post['user_alias']) ?>
                 </a>
-                <?php if ( $_SESSION ): ?>
+                <?php if ( $_SESSION && $_SESSION['user_id'] !== $post['user_id'] ): ?>
                 <form>
                     <button onclick="postFollow()">Follow</button>
                 </form>
                 <?php endif; ?>
             </div>
-
+            
             <?php if ( $_SESSION && $_SESSION['user_id'] === $post['fk_user_id'] ): ?>
             <details>
                 <summary>···</summary>
@@ -36,7 +36,7 @@
 
         </div>
         <div class="bottom-bar">
-            <p class="likes"><span>12</span> likes</p>
+            <p class="likes"><span><?php out($post['post_likes']) ?></span> likes</p>
             <?php if ( $_SESSION ): ?>
             <div class="actions">
                 <form>

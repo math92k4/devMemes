@@ -29,11 +29,13 @@ async function postSession(form) {
     method: "POST",
     body: new FormData(form),
   });
+
   if (res.status != 200) {
     const err = await res.json();
     console.log(err);
     return;
   }
+
   window.location.href = "/";
 }
 
@@ -80,8 +82,9 @@ async function deletePost(postId) {
     console.log(err);
     return;
   }
+
   // SUCCES remove the post from DOM
-  document.querySelector("#post-" + postId).remove;
+  document.querySelector("#post-" + postId).remove();
 }
 
 async function postLike() {
