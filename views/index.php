@@ -21,6 +21,6 @@ require_once __DIR__.'/templates/main_nav.php';
     <?php require_once __DIR__.'/templates/sidebar.php'; ?>
 </div>
 
-<?php $_SESSION ? require_once __DIR__.'/templates/create_post_modal.php' : '' ?>
-
-<?php require_once __DIR__.'/templates/footer.php';
+<?php 
+$_SESSION ? require_once __DIR__.'/templates/create_post_modal.php' : '';
+require_once __DIR__.'/templates/footer.php';

@@ -78,7 +78,13 @@ details > summary::-webkit-details-marker {
 span {
     color: inherit;
 }
-
+form .wrapper {
+    display: grid;
+    grid-gap: .3rem;
+}
+form .wrapper label {
+    color: var(--secondary-font-clr);
+}
 
 /* HEADER */
 #main-header:not(.sign-page #main-header) {
@@ -200,6 +206,9 @@ a.sign-in {
     width: 640px;
     padding: 1.25rem .875rem 0 0;
 }
+#content main {
+    margin-bottom: 5rem;
+}
 #content > div {
     flex: 1;
     padding: 1.25rem 0 0 .875rem;
@@ -244,6 +253,19 @@ a.sign-in {
 }
 .post .top-bar > div * {
     font-size: var(--small-font-size);
+}
+.post details {
+    position: relative;
+}
+.post details > button {
+    position: absolute;
+    right: -1rem;
+    top: 1.5rem;
+    background-color: var(--highlight-clr);
+    color: var(--bg-clr);
+    padding: .5rem 1rem;
+    border-radius: var(--main-radius);
+    font-weight: 500!important;
 }
 .post .top-bar .alias {
     color: var(--main-font-clr);
@@ -352,6 +374,19 @@ aside img {
     height: 3rem;
     margin-right: .5rem;
 }
+.requirements {
+    font-size: var(--small-font-size);
+}
+
+/* FORM VALIDATION */
+form .submitter {
+    transition: opacity .4s;
+}
+form:invalid .submitter,
+form .submitter.invalid {
+    opacity: 0.4;
+    pointer-events: none;
+}
 
 /* GRADIENT IMAGE BG */
 .bg-gradient {
@@ -434,10 +469,81 @@ aside img {
 .user-profile div {
     margin: 1.25rem;
     display: flex;
+    align-items: center;
     justify-content: space-between;
 }
-.user-profile button {
+.user-profile button,
+.user-profile a {
     font-size: var(--small-font-size)
+}
+
+/* User settings */
+.settings-form {
+    display: grid;
+    gap: .8rem;
+    margin-bottom: 4rem;
+    max-width: 450px;
+    margin-top: 1rem;
+}
+.settings-form input {
+    background-color: var(--post-bg-clr);
+    border-radius: var(--img-radius);
+    padding: .8rem .7rem;
+}
+.settings-form #image {
+    margin-bottom: 1.5rem;
+    position: relative;
+    width: 12rem;
+    height: 12rem;
+}
+.settings-form #image img {
+    width: 12rem;
+    height: 12rem;
+    object-fit: cover;
+}
+[for="user-image"] {
+    cursor: pointer;
+    fill: var(--secondary-font-clr);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: block;
+    background-color: var(--bg-clr);
+    border-radius: 100px;
+    position: absolute;
+    z-index: 2;
+    top: .5rem;
+    right: .5rem;
+}
+[for="user-image"] svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    padding: .4rem;
+}
+.settings-form legend {
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+    color: var(--secondary-font-clr);
+}
+.settings-form label {
+    font-size: .9rem;
+}
+.settings-form .button-container button {
+    background-color: var(--highlight-clr);
+    color: var(--bg-clr);
+    padding: .6rem 1rem;
+    font-weight: 500;
+    border-radius: var(--main-radius);
+    margin-top: 1rem;
+}
+.delete-user-btn {
+    background-color: var(--crazy-clr);
+    color: black;
+    font-weight: 500;
+    padding: .6rem 1rem;
+    border-radius: var(--main-radius);
 }
 
 /* Modals */
@@ -470,6 +576,18 @@ aside img {
     display: grid;
     border-radius: var(--main-radius);
 }
+.modal > div:not(.modal-hider){
+    background-color: var(--post-bg-clr);
+    display: grid;
+    border-radius: var(--main-radius);
+}
+.modal .btn-container {
+    display: flex;
+    margin: 0 1rem 1.25rem 1rem;
+}
+.modal .btn-container * {
+    margin: .5rem;
+}
 .modal textarea {
     background-color: transparent;
     border: 0;
@@ -483,10 +601,12 @@ aside img {
     padding: 1.25rem;
     display: flex;
     justify-content: flex-end;
-
 }
 .modal h2 {
     padding: 1.25rem;
+}
+.modal h2:not(form h2) {
+    text-align: center;
 }
 .modal .file-label {
     background-color: var(--line-clr);
@@ -507,6 +627,10 @@ aside img {
     padding: .5rem 1rem;
     border-radius: var(--main-radius);
     font-size: var(--small-font-size);
+}
+.modal .btn-container .danger {
+    background-color: var(--crazy-clr);
+    color: var(--bg-clr);
 }
 
 /* FOOTER */

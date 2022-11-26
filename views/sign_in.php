@@ -18,11 +18,12 @@ require_once __DIR__.'/templates/header.php';
     <div class="sign-form-container">
         <h1>devmemes</h1>
         <form class="sign-form" action="/session" method="POST">
-            <input type="email" name="email" required placeholder="Email">
-            <input type="password" name="password" required placeholder="Password">
-            <button onclick="formValidation( postSession )">Sign in</button>
+            <input type="email" name="email" placeholder="Email" required pattern='^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))' >
+            <input type="password" name="password" minlength="8" placeholder="Password" required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}" >
+            <button class="submitter" onclick="formValidation( postSession )">Sign in</button>
         </form>
     </div>
 </main>
 
 <?php require_once __DIR__.'/templates/footer.php';
+

@@ -5,7 +5,7 @@ require_once __DIR__.'/classes/connection.php';
 // ##############################
 // ##############################
 // RESPONSE
-function _respond($message='', $status=200, $as_bool = false) {
+function _respond($message='', $status=200) {
     http_response_code($status);
     header('Content-Type: application/json');
     $res = is_array($message) ? $message : ['info' => $message];
@@ -17,7 +17,7 @@ function _respond($message='', $status=200, $as_bool = false) {
 // ##############################
 // ##############################
 // VALIDATION CONSTS
-define('_ALIAS_REGEX', '/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð0123456789 -]+$/u');
+define('_ALIAS_REGEX', '/^[a-zA-Z0123456789-]+$/u');
 define('_ALIAS_MIN_LENGTH', 2);
 define('_ALIAS_MAX_LENGTH', 50);
 
@@ -25,7 +25,7 @@ define('_PASSWORD_REGEX', '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&
 define('_PASSWORD_MIN_LENGTH', 8);
 define('_PASSWORD_MAX_LENGTH', 32);
 
-define('_EMAIL_REGEX', '/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/');
+define('_EMAIL_REGEX', '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
 define('_EMAIL_MIN_LENGTH', 6);
 define('_EMAIL_MAX_LENGTH', 50);
 
@@ -87,11 +87,11 @@ function _validate_id($id) {
 }
 
 function _validate_text($text) {
-    if ( !isset($text) ) _resond('Please provide a text', 400);
+    if ( !isset($text) ) _respond('Please provide a text', 400);
     $text = trim($text);
     $err_message = 'Invalid text';
-    if ( strlen($text) < _TEXT_MIN_LENGTH ) _resond($err_message, 400);
-    if ( strlen($text) > _TEXT_MAX_LENGTH ) _resond($err_message, 400);
+    if ( strlen($text) < _TEXT_MIN_LENGTH ) _respond($err_message, 400);
+    if ( strlen($text) > _TEXT_MAX_LENGTH ) _respond($err_message, 400);
     return $text;
 }
 
@@ -152,7 +152,7 @@ function _validate_image($image){
 // DB SELECTERS - for views
 function _get_newest_posts($offset = 0) {
     // Set user id from session or set invalid
-    isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : $user_id = '';
+    isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : $user_id = 0;
 
     try {
         $db = new DB();
@@ -220,11 +220,14 @@ function _get_posts_by_alias($alias, $offset = 0) {
     if ( strlen($alias) < _ALIAS_MIN_LENGTH ) return [];
     if ( strlen($alias) > _ALIAS_MAX_LENGTH ) return [];
 
+    isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : $user_id = 0;
+
     try {
         $db = new DB();
-        $q = $db->prepare('CALL SELECT_posts_by_alias (:alias, :offset)');
+        $q = $db->prepare('CALL SELECT_posts_by_alias (:alias, :offset, :session_user_id)');
         $q->bindValue(':alias', $alias);
         $q->bindValue(':offset', $offset);
+        $q->bindValue(':session_user_id', $user_id);
         $q->execute();
         return $q->fetchAll();
 
@@ -241,5 +244,6 @@ function _get_posts_by_alias($alias, $offset = 0) {
 // ##############################
 // DB SELECTERS - for views
 function _delete_image($image) {
+    if ( in_array($image, _PROTECTED_IMGS) ) return;
     unlink(_IMG_TARGET_DIR . $image);
 }

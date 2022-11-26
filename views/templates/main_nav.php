@@ -3,7 +3,7 @@
         <ul>
             <li><a id="logo" href="/">dm</a></li>
             <li id="search-bar-container">
-                <label for="search-bar"><?php require_once __DIR__.'/../../public/images/search.svg' ?></label>
+                <label for="search-bar"><?php require __DIR__.'/../../public/images/search.svg' ?></label>
                 <input id="search-bar" type="text">
             </li>
         </ul>
@@ -12,17 +12,17 @@
             <?php if ( $_SESSION ): ?>
             <li>
                 <a class="icon home" href="/">
-                    <?php require_once __DIR__.'/../../public/images/home.svg' ?>
+                    <?php require __DIR__.'/../../public/images/home.svg' ?>
                 </a>
             </li>
             <li>
                 <a class="icon user" href="/user/<?= $_SESSION['user_alias'] ?>">
-                    <?php require_once __DIR__.'/../../public/images/user.svg' ?>
+                    <?php require __DIR__.'/../../public/images/user.svg' ?>
                 </a>
             </li>
             <li>
                 <button onclick="showModal('.post-modal')" class="icon pen">
-                    <?php require_once __DIR__.'/../../public/images/pen.svg' ?>
+                    <?php require __DIR__.'/../../public/images/pen.svg' ?>
                 </button>
             </li>
 

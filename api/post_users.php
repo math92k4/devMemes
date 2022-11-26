@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__.'/../_x.php';
 
+// Validate data
 $alias = _validate_alias($_POST['alias']);
 $email = _validate_email($_POST['email']);
 $password = _validate_password($_POST['password']);
 $password = password_hash($password, PASSWORD_DEFAULT);
 
+// Connect to db
 try {
     $db = new DB();
     $q = $db->prepare('CALL INSERT_user (:alias, :email, :password)');

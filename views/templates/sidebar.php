@@ -13,9 +13,6 @@
                             <p class="name"><?php out($user['total_likes']) ?> likes</p>
                         </div>
                     </a>
-                    <form action="/follow" method="POST">
-                        <button>Follow</button>
-                    </form>
                 </li>
                 <?php endforeach; ?>
 

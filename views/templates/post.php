@@ -7,14 +7,9 @@
                 <a class="alias" href="/user/<?php out($post['user_alias']) ?>" onclick="spa()">
                     <?php out($post['user_alias']) ?>
                 </a>
-                <?php if ( $_SESSION && $_SESSION['user_id'] !== $post['user_id'] ): ?>
-                <form>
-                    <button onclick="postFollow()">Follow</button>
-                </form>
-                <?php endif; ?>
             </div>
             
-            <?php if ( $_SESSION && $_SESSION['user_id'] === $post['fk_user_id'] ): ?>
+            <?php if ( $_SESSION && $_SESSION['user_id'] === $post['user_id'] ): ?>
             <details>
                 <summary>···</summary>
                 <button onclick="deletePost(<?php out($post['post_id']) ?>)">delete</button>
@@ -37,12 +32,16 @@
         </div>
         <div class="bottom-bar">
             <p class="likes"><span><?php out($post['post_likes']) ?></span> likes</p>
-            <?php if ( $_SESSION ): ?>
+            <?php if ( $_SESSION && $_SESSION['user_id'] !== $post['user_id'] ): ?>
             <div class="actions">
                 <form>
                     <input type="text" name="post_id" value="<?php out($post['post_id']) ?>" hidden>
+                    <?php if ($post['is_liking']): ?>
+                    <button onclick="deleteLike()">Unlike</button>
+                    <?php else: ?>
                     <button onclick="postLike()">Like</button>
-                </form>
+                    <?php endif; ?>
+                </form>     
             </div>
             <?php endif; ?>
         </div>

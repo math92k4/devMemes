@@ -18,10 +18,11 @@ require_once __DIR__.'/templates/header.php';
     <div class="sign-form-container">
         <h1>devmemes</h1>
         <form class="sign-form" action="/create-user" method="POST">
-            <input type="text" name="alias" required placeholder="Alias">
-            <input type="email" name="email" required placeholder="Email">
-            <input type="password" name="password" required placeholder="Password">
-            <button onclick="formValidation( postUser )">Sign up</button>
+            <input type="text" name="alias" minlength="2" required placeholder="Alias" pattern="^[a-zA-Z0123456789-]+">
+            <input type="email" name="email" required placeholder="Email" pattern='^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))' >
+            <input type="password" name="password" minlength="8" required placeholder="Password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}" >
+            <p class="requirements">Minimum 8 characters, 1 capital, 1 lowercase and 1 special character. </p>
+            <button class="submitter" onclick="formValidation( postUser )">Sign up</button>
         </form>
     </div>
 </main>
