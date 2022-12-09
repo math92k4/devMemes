@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__.'/router.php';
 
-
 // Website routes
 get('/', 'views/index.php');
 get('/sign-up', 'views/sign_up.php');
@@ -20,6 +19,14 @@ get('/register', function() { header('Location: /sign-up'); });
 get('/signup', function() { header('Location: /sign-up'); });
 get('/create-account', function() { header('Location: /sign-up'); });
 
+
+// Admin routes
+get('/admin', 'admin/index.php');
+get('/admin/user-list/$page', 'admin/index.php');
+get('/admin/sign-in', 'admin/sign_in.php');
+post('/admin/sign-in', 'admin/sign_in.php');
+get('/admin/sign-out', 'admin/sign_out.php');
+get('/admin/users/$user_id/delete', 'admin/delete_user.php');
 
 // APIs
 post('/users', 'api/post_users.php');

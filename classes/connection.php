@@ -1,5 +1,6 @@
 <?php
 class DB extends PDO {
+    
     public function __construct() {
         $dsn = 'mysql:host=localhost; dbname=dev_memes; charset=utf8mb4';
         $user = 'root';

@@ -7,7 +7,7 @@ if ( !$_SESSION ) _respond('Unauthorized attempt', 401);
 
 // Validate data
 $user_id = $_SESSION['user_id'];
-$text = isset($_POST['text']) ? _validate_text($_POST['text']) : null;
+$text = isset($_POST['text']) && $_POST['text'] ? _validate_text($_POST['text']) : null;
 $image = isset($_FILES['image']) ? _validate_image($_FILES['image']) : null;
 // No data to insert?
 if ( !$image && !$text ) _respond('A post must at least contain a text or an image', 400);

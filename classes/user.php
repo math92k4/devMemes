@@ -1,46 +1,68 @@
 <?php
-require_once __DIR__.'connection.php';
+require_once __DIR__.'/connection.php';
 
 class User {
-    public function signUp ($alias, $email, $password) {
-        $db = new DB();
-        $q = $db->prepare('CALL INSERT_user (:alias, :email, :password)');
-        $q->bindValue(':alias', $this->alias);
-        $q->bindValue(':email', $this->email);
-        $q->bindValue(':password', $this->password);
-        $q->execute();
-        return $q->fetch();
+
+    private const OFFSET_REGEX = '/^[0-9][0-9]*$/';
+    private const OFFSET_ERR_MESSAGE = 'Offset must be a >= 0 integer';
+
+    private const USER_ID_REGEX = '/^[1-9][0-9]*$/';
+    private const USER_ID_ERR_MESSAGE = 'User id must be a postive integer';
+
+    private function validateUserId($user_id) :void {
+        if (!preg_match(self::USER_ID_REGEX, $user_id)) {
+            throw new Exception (self::OFFSET_ERR_MESSAGE);
+        }
     }
 
-    public function signIn ($email, $password) {
-        $db = new DB();
-        $q = $db->prepare('SELECT user_password, user_id FROM users WHERE user_email = :email LIMIT 1');
-        $q->bindValue(':email', $email);
-        $q->execute();
-        $res = $q->fetch();
-        $user_id = $res['user_id']; 
-        $hashed_password = $res['user_password'];
-        if ( !password_verify($password, $hashed_password) ) return;
+    private function validateOffset($offset) :void {
+        if (!preg_match(self::OFFSET_REGEX, $offset)) {
+            throw new Exception (self::OFFSET_ERR_MESSAGE);
+        }
+    }
 
-        $q->prepare('CALL INSERT_session (:user_id)');
+    public function delete($user_id) {
+        self::validateUserId($user_id);
+        $db = new DB();
+        $q = $db->prepare('DELETE FROM users WHERE user_id = :user_id');
         $q->bindValue(':user_id', $user_id);
         $q->execute();
-        return $q->fetch();
     }
 
-    public function delete ($id) {
-        $db = new DB();
-        $q = $db->prepare('DELETE FROM users WHERE id =');
-    }
+    public function allImages($user_id) {
+        self::validateUserId($user_id);
+        $sql = <<<TEXT
+        SELECT user_image AS image FROM users 
+        WHERE user_id = :user_id
+        UNION
+        SELECT post_image AS image FROM posts 
+        WHERE fk_user_id = :user_id
+        AND post_image IS NOT NULL
+        TEXT;
 
-    public function byAlias ($alias) {
         $db = new DB();
-        $q = $db->prepare('SELECT * FROM user_view WHERE user_alias = :alias');
-        $q->bindValue(':alias', $alias);
+        $q = $db->prepare($sql);
+        $q->bindValue(':user_id', $user_id);
         $q->execute();
-        return $q->fetch();
+        $res = $q->fetchAll();
+        return $res;
     }
 
-    public function getTenNewest () {
-    } 
+    public function listAll($offset) :array {
+        self::validateOffset($offset);
+        $db = new DB();
+        $q = $db->prepare('SELECT * FROM users_view LIMIT 25 OFFSET :offset');
+        $q->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $q->execute();
+        $res = $q->fetchAll();
+        return $res;
+    }
+
+    public function countAll() :int {
+        $db = new DB();
+        $q = $db->prepare('SELECT COUNT(*) AS total FROM users');
+        $q->execute();
+        $total = $q->fetch()['total'];
+        return $total;
+    }
 }

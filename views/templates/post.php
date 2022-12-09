@@ -1,5 +1,7 @@
 <article id="post-<?php out($post['post_id']) ?>">
-    <img src="/public/images/uploads/<?php out($post['user_image']) ?>">
+    <a href="/user/<?php out($post['user_alias']) ?>">
+        <img src="/public/images/uploads/<?php out($post['user_image']) ?>">
+    </a>
     <div class="post">
 
         <div class="top-bar">
@@ -10,10 +12,7 @@
             </div>
             
             <?php if ( $_SESSION && $_SESSION['user_id'] === $post['user_id'] ): ?>
-            <details>
-                <summary>···</summary>
-                <button onclick="deletePost(<?php out($post['post_id']) ?>)">delete</button>
-            </details>
+            <button onclick="deletePost(<?php out($post['post_id']) ?>)">Delete</button>
             <?php endif; ?>
 
             <div class="fold"></div>

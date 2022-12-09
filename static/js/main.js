@@ -31,7 +31,7 @@ function postValidation() {
 }
 
 function infoValidation() {
-  const form = event.target.form;
+  const form = document.querySelector("#update-info-form");
   const submitter = form.querySelector(".submitter");
   const currentEmail = form.email.dataset.current;
   const currentAlias = form.alias.dataset.current;
@@ -57,7 +57,7 @@ async function postUser(form) {
   });
   if (res.status != 200) {
     const err = await res.json();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
   // SUCCES redir to frontpage
@@ -81,7 +81,7 @@ async function updateUserInfo() {
 
   if (res.status !== 200) {
     const err = await res.json();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
 
@@ -103,12 +103,11 @@ async function updateUserPassword() {
 
   if (res.status !== 200) {
     const err = await res.text();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
 
   form.reset();
-  console.log("Password updated");
 }
 
 async function deleteUser() {
@@ -122,7 +121,7 @@ async function deleteUser() {
 
   if (res.status != 200) {
     const err = await res.json();
-    console.log(err);
+    showErrorModal(err);
   }
 
   window.location.href = "/sign-out";
@@ -136,7 +135,7 @@ async function postSession(form) {
 
   if (res.status != 200) {
     const err = await res.json();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
 
@@ -162,17 +161,22 @@ async function postPost() {
 
   if (res.status != 200) {
     const err = await res.text();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
   // SUCCES
-  // Get the post as text and append to DOM
-  const postHtml = await res.text();
-  document.querySelector(".posts-container").insertAdjacentHTML("afterbegin", postHtml);
+
+  main = document.querySelector("main");
+  if (main.dataset.can_append_post) {
+    // Get the post as text and append to DOM
+    const postHtml = await res.text();
+    document.querySelector(".posts-container").insertAdjacentHTML("afterbegin", postHtml);
+  }
   // Close modal
   const modal = document.querySelector(".post-modal");
   modal.classList.remove("show");
   modal.querySelector(".modal-hider").removeEventListener("click", hideModal);
+  modal.querySelector(".load-image-container").remove();
   form.reset();
   postValidation();
 }
@@ -188,7 +192,7 @@ async function deletePost(postId) {
 
   if (res.status != 200) {
     const err = await res.json();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
 
@@ -213,7 +217,7 @@ async function postLike() {
 
   if (res.status != 200) {
     const err = await res.json();
-    console.log(err);
+    showErrorModal(err);
     return;
   }
 
@@ -237,8 +241,8 @@ async function deleteLike() {
   }
 
   if (res.status != 200) {
-    const err = await res.text();
-    console.log(err);
+    const err = await res.json();
+    showErrorModal(err);
     return;
   }
 
@@ -263,4 +267,127 @@ function hideModal(modalClass) {
   if (modal.querySelector("form")) {
     modal.querySelector("form").reset();
   }
+  if (modal.querySelector(".load-image-container")) {
+    modal.querySelector(".load-image-container").remove();
+  }
 }
+
+//####################
+//####################
+// IMAGE LOAD HANDLING
+
+function loadPostImage() {
+  const input = event.target;
+  const image = URL.createObjectURL(input.files[0]);
+  const html = `
+  <div class="load-image-container">
+    <button onclick="removeLoadPostImage();" >⨉</button>
+    <img src="${image}">
+  </div>
+  `;
+  input.insertAdjacentHTML("afterend", html);
+}
+
+function removeLoadPostImage() {
+  event.preventDefault();
+  const btn = event.target;
+  const form = btn.form;
+  form.querySelector('[type="file"]').value = null;
+  btn.parentElement.remove();
+}
+
+function loadUserImage() {
+  const input = event.target;
+  const image = URL.createObjectURL(input.files[0]);
+  const html = `
+  <div class="load-image-container">
+    <button onclick="removeLoadUserImage()" >⨉</button>
+    <img src="${image}">
+  </div>
+  `;
+  input.insertAdjacentHTML("afterend", html);
+}
+
+function removeLoadUserImage() {
+  event.preventDefault();
+  const btn = event.target;
+  const form = btn.form;
+  form.querySelector('[type="file"]').value = null;
+  btn.parentElement.remove();
+  infoValidation();
+}
+
+//####################
+//####################
+// ERROR modal - the bad UX :)
+function showErrorModal(message) {
+  const html = `
+  <div class="modal show error-modal">
+    <div class="modal-hider" onclick="hideModal('.error-modal')"></div>
+    <div>
+      <p>${message.info}</p>
+      <button onclick="hideErrorModal()">Ok</button>
+    </div>
+  </div>
+  `;
+  document.querySelector("body").insertAdjacentHTML("beforeend", html);
+}
+
+function hideErrorModal() {
+  document.querySelector(".error-modal").remove();
+}
+
+
+//####################
+//####################
+//SPA - Single page app
+// Init spa setup for the first loaded page
+history.replaceState({ spaUrl: location.pathname }, "", location.pathname);
+document.querySelector("main").dataset.spa_url = location.pathname;
+let memoUrl = location.pathname;
+
+async function spa(spaUrl, doPushState = true) {
+  // if new and current url are same - end
+  if (spaUrl == memoUrl) return;
+
+  // Fetch spaUrl if not in DOMM
+  if (!document.querySelector(`[data-spa_url="${spaUrl}"]`)) {
+    const conn = await fetch(spaUrl, {
+      method: "GET",
+      headers: { spa: true },
+    });
+
+    if (!conn.status == 200) {
+      console.log("Can't connect to endpoint");
+      return;
+    }
+    const html = await conn.text();
+
+    // Hide old data
+    document.querySelector(`[data-spa_url="${memoUrl}"]`).style.display = "none";
+    // Append the new data and set dataset-spa_url
+    document.querySelector("#spa").insertAdjacentHTML("afterbegin", html);
+    document.querySelector('main:not([display="none"])').dataset.spa_url = spaUrl;
+  }
+
+  // Toggle spa pages
+  document.querySelector(`[data-spa_url="${memoUrl}"]`).style.display = "none";
+  document.querySelector(`[data-spa_url="${spaUrl}"]`).style.display = "block";
+
+  // Get and set title
+  const title = document.querySelector(`[data-spa_url="${spaUrl}"]`).dataset.page_title;
+  document.querySelector("title").textContent = title;
+
+  // Memo the appended url
+  memoUrl = spaUrl;
+
+  // Push state
+  if (doPushState) {
+    history.pushState({ spaUrl: spaUrl }, "", spaUrl);
+  }
+}
+
+// History back/forth
+window.addEventListener("popstate", (e) => {
+  spa(e.state.spaUrl, false);
+});

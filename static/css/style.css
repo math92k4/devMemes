@@ -229,13 +229,16 @@ a.sign-in {
 .posts-container article {
     display: flex;
 }
-.posts-container article > img {
+.posts-container article > a {
+    height: 4rem;
+    position: sticky;
+    top: 65px;
+}
+.posts-container article > a img {
     width: 4rem;
     height: 4rem;
     margin-right: 1rem;
     object-fit: cover;
-    position: sticky;
-    top: 65px;
 }
 .post {
     background-color: var(--post-bg-clr);
@@ -254,18 +257,8 @@ a.sign-in {
 .post .top-bar > div * {
     font-size: var(--small-font-size);
 }
-.post details {
-    position: relative;
-}
-.post details > button {
-    position: absolute;
-    right: -1rem;
-    top: 1.5rem;
-    background-color: var(--highlight-clr);
-    color: var(--bg-clr);
-    padding: .5rem 1rem;
-    border-radius: var(--main-radius);
-    font-weight: 500!important;
+.post .top-bar button {
+    font-size: var(--small-font-size);
 }
 .post .top-bar .alias {
     color: var(--main-font-clr);
@@ -358,6 +351,9 @@ aside li {
     align-items: center;
     padding: .5rem .8rem .5rem .625rem;
 }
+aside li:hover {
+    background-color: var(--post-bg-clr);
+}
 aside .alias {
     font-weight: 700;
 }
@@ -366,8 +362,17 @@ aside .likes {
     font-weight: 500;
 }
 aside a {
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+aside a > div {
+    display: flex;
+    align-items: center;
+}
+aside a > p {
+    color: var(--highlight-clr);
 }
 aside img {
     width: 3rem;
@@ -377,7 +382,9 @@ aside img {
 .requirements {
     font-size: var(--small-font-size);
 }
-
+#update-password-form .requirements {
+    color: var(--secondary-font-clr);
+}
 /* FORM VALIDATION */
 form .submitter {
     transition: opacity .4s;
@@ -453,7 +460,6 @@ form .submitter.invalid {
     color: var(--main-font-clr);
 }
 
-
 /* User profile */
 .user-profile {
     margin-bottom: 4rem;
@@ -480,8 +486,8 @@ form .submitter.invalid {
 /* User settings */
 .settings-form {
     display: grid;
-    gap: .8rem;
-    margin-bottom: 4rem;
+    gap: 1.2rem;
+    margin-bottom: 5rem;
     max-width: 450px;
     margin-top: 1rem;
 }
@@ -525,10 +531,10 @@ form .submitter.invalid {
 .settings-form legend {
     font-size: 1.5rem;
     margin-bottom: .5rem;
-    color: var(--secondary-font-clr);
+    color: var(--main-font-clr);
 }
 .settings-form label {
-    font-size: .9rem;
+    font-size: 1rem;
 }
 .settings-form .button-container button {
     background-color: var(--highlight-clr);
@@ -633,6 +639,78 @@ form .submitter.invalid {
     color: var(--bg-clr);
 }
 
+/* JS loaded images */
+.load-image-container {
+    position: relative;
+}
+.load-image-container  button {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    padding: .4rem .5rem .5rem .5rem;
+    line-height: .7;
+    border-radius: 100px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    background-color: var(--bg-clr);
+    color: var(--secondary-font-clr);
+}
+.post-modal .load-image-container  button {
+    background-color: var(--post-bg-clr);
+}
+.load-image-container + label.file-label {
+    display: none;
+}
+.post-modal .load-image-container {
+    max-height: calc(90vh - 270px);
+    margin: auto;
+}
+.post-modal .load-image-container img {
+    max-height: calc(90vh - 270px);
+    display: block;
+    object-fit: contain;
+    border-radius: 0;
+}
+.settings-form .load-image-container {
+    margin-bottom: 1.5rem;
+}
+.settings-form .load-image-container + #image {
+    display: none;
+}
+.settings-form .load-image-container button {
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    padding-bottom: 2px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.settings-form .load-image-container {
+    width: 12rem;
+}
+.settings-form .load-image-container img {
+    width: 12rem;
+    height: 12rem;
+    object-fit: cover;
+}
+
+/* Error modal */
+.error-modal div:not(.modal-hider) {
+    font-size: 1.2rem;
+    padding: 1rem;
+}
+.error-modal p {
+
+    margin-bottom: 2rem;
+}
+.error-modal button {
+    max-width: 100px;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 0.
+}
+
 /* FOOTER */
 footer {
     margin-bottom: 1.25rem;
@@ -642,4 +720,21 @@ footer a {
     font-weight: 500;
     margin: 0.625rem;
 }
+
+@media only screen and (max-width: 1000px) {
+    #content {
+        padding: 0 1rem;
+    }
+}
+
+@media only screen and (max-width: 950px) {
+    #content main + div {
+        display: none;
+    }
+    #content main {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 

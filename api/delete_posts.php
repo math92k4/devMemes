@@ -14,10 +14,11 @@ try {
     $q->execute();
     if ($q->rowCount() === 0) _respond('No content', 204);
     $image = $q->fetch()['post_image'];
+    
+    if ( $image ) _delete_image($image);
+    _respond('Post deleted', 200);
 
 } catch (Exception $ex) {
     _respond('Server error', 500);
 }
 
-if ( $image ) _delete_image($image);
-_respond('Post deleted', 200);

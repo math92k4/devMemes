@@ -9,7 +9,7 @@ require_once __DIR__.'/templates/main_nav.php';
 ?>
 
 <div id="content">
-    <main>
+    <main data-can_append_post="<?php echo isset($_SESSION['user_alias']) && $_SESSION['user_alias'] === $user_alias ? 1 : '' ?>">
         <?php
         $user = _get_user_by_alias($user_alias);
         if ($user) {

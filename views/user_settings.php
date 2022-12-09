@@ -15,11 +15,11 @@ require_once __DIR__.'/templates/main_nav.php';
     <main>
         <form id="update-info-form" class="settings-form">
             <legend>Edit info</legend>
+            <input type="file" name="image" id="user-image" onchange="infoValidation(); loadUserImage();" hidden>
             <div id="image">
                 <label for="user-image"><?php require __DIR__.'/../public/images/pen.svg' ?></label>
                 <img src="/public/images/uploads/<?php out($_SESSION['user_image']) ?>" >
             </div>
-            <input type="file" name="image" id="user-image" onchange="infoValidation()" hidden>
             <div class="wrapper">
                 <label for="alias">Alias</label>
                 <input type="text" name="alias" minlength="2" required placeholder="Alias" data-current="<?php out($_SESSION['user_alias']) ?>" oninput="infoValidation()" value="<?php out($_SESSION['user_alias']) ?>" pattern="^[a-zA-Z0123456789-]+">
