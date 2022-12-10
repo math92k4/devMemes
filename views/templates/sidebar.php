@@ -6,7 +6,11 @@
 
                 <?php foreach(_get_popular_users() as $user): ?>
                 <li>
-                    <a href="/user/<?php out($user['user_alias']) ?>" >
+                    <a
+                    href="/user/<?php out($user['user_alias']) ?>"
+                    onclick="spa('/user/<?php out($user['user_alias']) ?>'); return false"
+                    data-title="<?php out($user['user_alias']) ?> | devmemes"
+                    >
                         <div>
                             <img src="/public/images/uploads/<?php out($user['user_image']) ?>" alt="image of <?php out($user['user_alias']) ?>">
                             <div>

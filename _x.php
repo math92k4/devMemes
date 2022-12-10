@@ -247,3 +247,12 @@ function _delete_image($image) {
     if ( in_array($image, _PROTECTED_IMGS) ) return;
     unlink(_IMG_TARGET_DIR . $image);
 }
+
+
+// ##############################
+// ##############################
+// SPA
+function IS_SPA() {
+    return isset( $_SERVER['HTTP_SPA'] );
+}
+

@@ -16,7 +16,7 @@ try {
     $q->bindValue(':session_id', $_SESSION['session_id']);
     $q->execute();
 } catch (Exception $ex) {
-    // Exception shouldt stop the sign-out
+    // Exception shouldnt stop the sign-out
     // TODO  Maybe log error
 }
 

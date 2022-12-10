@@ -1,12 +1,21 @@
 <article id="post-<?php out($post['post_id']) ?>">
-    <a href="/user/<?php out($post['user_alias']) ?>">
+    <a 
+    href="/user/<?php out($post['user_alias']) ?>"
+    onclick="spa('/user/<?php out($post['user_alias']) ?>'); return false"
+    data-title="<?php out($post['user_alias']) ?> | devmemes"
+    >
         <img src="/public/images/uploads/<?php out($post['user_image']) ?>">
     </a>
     <div class="post">
 
         <div class="top-bar">
             <div>
-                <a class="alias" href="/user/<?php out($post['user_alias']) ?>" onclick="spa()">
+                <a 
+                class="alias" 
+                href="/user/<?php out($post['user_alias']) ?>"
+                onclick="spa('/user/<?php out($post['user_alias']) ?>'); return false"
+                data-title="<?php out($post['user_alias']) ?> | devmemes"
+                >
                     <?php out($post['user_alias']) ?>
                 </a>
             </div>
