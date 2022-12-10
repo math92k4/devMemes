@@ -1,0 +1,24 @@
+form {
+    display: grid;
+    max-width: 250px;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 5px;
+}
+
+td a {
+    text-decoration: none;
+}

@@ -176,7 +176,7 @@ async function postPost() {
   const modal = document.querySelector(".post-modal");
   modal.classList.remove("show");
   modal.querySelector(".modal-hider").removeEventListener("click", hideModal);
-  modal.querySelector(".load-image-container").remove();
+  if (modal.querySelector(modal.querySelector(".load-image-container"))) modal.querySelector(".load-image-container").remove();
   form.reset();
   postValidation();
 }
@@ -363,16 +363,16 @@ async function spa(spaUrl, doPushState = true) {
     }
     const html = await conn.text();
 
-    // Hide old data
-    document.querySelector(`[data-spa_url="${memoUrl}"]`).style.display = "none";
+    // Remove old data
+    document.querySelector(`[data-spa_url="${memoUrl}"]`).remove();
     // Append the new data and set dataset-spa_url
     document.querySelector("#spa").insertAdjacentHTML("afterbegin", html);
-    document.querySelector('main:not([display="none"])').dataset.spa_url = spaUrl;
+    document.querySelector('main').dataset.spa_url = spaUrl;
   }
 
   // Toggle spa pages
-  document.querySelector(`[data-spa_url="${memoUrl}"]`).style.display = "none";
-  document.querySelector(`[data-spa_url="${spaUrl}"]`).style.display = "block";
+  // document.querySelector(`[data-spa_url="${memoUrl}"]`).style.display = "none";
+  // document.querySelector(`[data-spa_url="${spaUrl}"]`).style.display = "block";
 
   // Get and set title
   const title = document.querySelector(`[data-spa_url="${spaUrl}"]`).dataset.page_title;
