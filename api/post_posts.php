@@ -21,7 +21,7 @@ try {
     $q->bindValue(':image', $image);
     $q->execute();
     $post = $q->fetch();
-    if ( !isset($_SERVER['HTTP_SPA']) ) _respond('Post created', 200);
+    if ( !_is_spa ) _respond('Post created', 200);
     require __DIR__.'/../views/templates/post.php';
 
 } catch (Exception $ex) {

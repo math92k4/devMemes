@@ -3,7 +3,7 @@ require_once __DIR__.'/../_x.php';
 
 _validate_session();
 $spa = true; //This is a spa page
-if (!IS_SPA()): //Exlude this from respond if spa request
+if (!_is_spa()): //Exlude this from respond if spa request
 require_once __DIR__.'/templates/header.php';
 require_once __DIR__.'/templates/main_nav.php';
 ?>
@@ -23,8 +23,14 @@ require_once __DIR__.'/templates/main_nav.php';
             }
             ?>
             </div>
+            <div
+            id="loader"
+            data-endpoint="/posts/newest"
+            data-offset="15"
+            <?= count($posts) < 15 ? 'data-all_loaded="1"' : '' ?>
+            ></div>
         </main>
-<?php if (!IS_SPA()): ?>
+<?php if (!_is_spa()): ?>
     </div>
     <?php require_once __DIR__.'/templates/sidebar.php'; ?>
 </div>

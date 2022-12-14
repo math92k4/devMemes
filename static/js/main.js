@@ -226,6 +226,19 @@ async function postLike() {
   likesElm.textContent = likes + 1;
   btn.insertAdjacentHTML("afterend", `<button onclick="deleteLike()">Unlike</button>`);
   btn.remove();
+  fetchPopularUsers();
+}
+
+async function fetchPopularUsers() {
+  const res = await fetch("/users/popular", {
+    headers: { spa: true },
+  });
+
+  if (res.status != 200) return;
+
+  const usersHtml = await res.text();
+  document.querySelector("#trending-memers ul").remove();
+  document.querySelector("#trending-memers h2").insertAdjacentHTML("afterend", usersHtml);
 }
 
 async function deleteLike() {
@@ -251,6 +264,8 @@ async function deleteLike() {
   likesElm.textContent = likes - 1;
   btn.insertAdjacentHTML("afterend", `<button onclick="postLike()">Like</button>`);
   btn.remove();
+
+  fetchPopularUsers();
 }
 
 //####################
@@ -337,7 +352,6 @@ function hideErrorModal() {
   document.querySelector(".error-modal").remove();
 }
 
-
 //####################
 //####################
 //SPA - Single page app
@@ -367,7 +381,7 @@ async function spa(spaUrl, doPushState = true) {
     document.querySelector(`[data-spa_url="${memoUrl}"]`).remove();
     // Append the new data and set dataset-spa_url
     document.querySelector("#spa").insertAdjacentHTML("afterbegin", html);
-    document.querySelector('main').dataset.spa_url = spaUrl;
+    document.querySelector("main").dataset.spa_url = spaUrl;
   }
 
   // Toggle spa pages
@@ -391,3 +405,37 @@ async function spa(spaUrl, doPushState = true) {
 window.addEventListener("popstate", (e) => {
   spa(e.state.spaUrl, false);
 });
+
+// Infinite scroll
+let isLoading = false;
+window.addEventListener("scroll", () => {
+  if (document.querySelector("#loader")) {
+    const loader = document.querySelector("#loader");
+    const loaderY = loader.getBoundingClientRect().y;
+    const endpoint = loader.dataset.endpoint;
+    const offset = loader.dataset.offset;
+    const moreToLoad = loader.dataset.all_loaded ? false : true;
+    if (loaderY < window.innerHeight && !isLoading && moreToLoad) {
+      fetchPostChunck(endpoint, offset);
+    }
+  }
+});
+
+async function fetchPostChunck(endpoint, offset) {
+  isLoading = true;
+  const res = await fetch(endpoint + "/" + offset, {
+    headers: { spa: true },
+  });
+
+  if (res.status != 200) {
+    return;
+  }
+
+  const postsHtml = await res.text();
+  const loader = document.querySelector("#loader");
+  loader.insertAdjacentHTML("beforebegin", postsHtml);
+  loader.dataset.offset = parseInt(offset) + 15;
+  const appendedPosts = loader.previousElementSibling.querySelectorAll("article");
+  if (appendedPosts.length < 15) loader.dataset.all_loaded = 1;
+  isLoading = false;
+}

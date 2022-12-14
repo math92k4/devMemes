@@ -8,10 +8,11 @@ if ( !isset($_SESSION['admin']) ){
     exit();
 }
 
-$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+$current_page = isset($page) ? $page : 1;
+
 $user = new User();
 // For displaying users
-$offset = $current_page - 1;
+$offset = ($current_page - 1) * 25;
 $users = $user->listAll($offset);
 // To determine page-amounts
 $usersCount = $user->countAll();
@@ -44,9 +45,9 @@ require_once __DIR__.'/header.php';
         <?php
         if( $current_page != 1 ) {
             $prev_page = htmlspecialchars($current_page -1);
-            echo '<a href="/admin/users-list/'. $prev_page .'">Next<?</a>';
+            echo '<a href="/admin/users-list/'. $prev_page .'">Prev<?</a>';
 
-        } elseif ( $current_page != $page_amount ) {
+        } if ( $current_page != $page_amount ) {
             $next_page = htmlspecialchars($current_page +1);
             echo '<a href="/admin/users-list/'. $next_page .'">Next<?</a>';
         }

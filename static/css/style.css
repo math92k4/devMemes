@@ -265,6 +265,10 @@ a.sign-in {
     margin-top: 1.25rem;
 }
 
+.posts-container + .posts-container {
+    margin-top: 1.25rem;
+}
+
 .posts-container article {
     display: flex;
 }

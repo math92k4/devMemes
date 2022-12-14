@@ -1,6 +1,10 @@
+main {
+    max-width: 400px;
+    margin: auto;
+}
+
 form {
     display: grid;
-    max-width: 250px;
 }
 
 input {
@@ -12,6 +16,7 @@ th,
 td {
     border: 1px solid black;
     border-collapse: collapse;
+    width: 100%;
 }
 
 th,

@@ -151,7 +151,7 @@ function _validate_image($image){
 // ##############################
 // DB SELECTERS - for views
 function _get_newest_posts($offset = 0) {
-    // Set user id from session or set invalid
+    // Set user id from session or set invalid (0)
     isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : $user_id = 0;
 
     try {
@@ -252,7 +252,7 @@ function _delete_image($image) {
 // ##############################
 // ##############################
 // SPA
-function IS_SPA() {
+function _is_spa() {
     return isset( $_SERVER['HTTP_SPA'] );
 }
 

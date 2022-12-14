@@ -22,7 +22,7 @@ get('/create-account', function() { header('Location: /sign-up'); });
 
 // Admin routes
 get('/admin', 'admin/index.php');
-get('/admin/user-list/$page', 'admin/index.php');
+get('/admin/users-list/$page', 'admin/index.php');
 get('/admin/sign-in', 'admin/sign_in.php');
 post('/admin/sign-in', 'admin/sign_in.php');
 get('/admin/sign-out', 'admin/sign_out.php');
@@ -38,6 +38,9 @@ delete('/posts/$post_id', 'api/delete_posts.php');
 post('/posts', 'api/post_posts.php');
 post('/likes', 'api/post_likes.php');
 delete('/likes/$post_id', 'api/delete_likes.php');
+get('/posts/newest/$offset', 'api/get_newest_posts.php');
+get('/posts/by-alias/$alias/$offset', 'api/get_posts_by_alias.php');
+get('/users/popular', 'api/get_popular_users.php');
 
 
 // Error pages

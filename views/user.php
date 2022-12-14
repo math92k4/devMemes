@@ -4,7 +4,7 @@ require_once __DIR__.'/../_x.php';
 _validate_session();
 $spa = true; //This is a spa page
 $page_title = $user_alias;
-if (!IS_SPA()):
+if (!_is_spa()):
 require_once __DIR__.'/templates/header.php';
 require_once __DIR__.'/templates/main_nav.php';
 ?>
@@ -27,8 +27,14 @@ require_once __DIR__.'/templates/main_nav.php';
             echo '<h2>Whoops... This user do not exist.</h2>';
             }
             ?>
+            <div
+            id="loader"
+            data-endpoint="/posts/by-alias/<?php out($user_alias) ?>"
+            data-offset="15"
+            <?= count($posts) < 15 ? 'data-all_loaded="1"' : '' ?>
+            ></div>
         </main>
-<?php if (!IS_SPA()): ?>
+<?php if (!_is_spa()): ?>
     </div>
     <?php require_once __DIR__.'/templates/sidebar.php'; ?>
 </div>

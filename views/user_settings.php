@@ -6,7 +6,7 @@ if ( !$_SESSION || $_SESSION['user_alias'] !== $user_alias ) {
     header('Location: /');
 }
 $spa = true;
-if (!IS_SPA()):
+if (!_is_spa()):
 $page_title = 'Settings';
 require_once __DIR__.'/templates/header.php';
 require_once __DIR__.'/templates/main_nav.php';
@@ -66,7 +66,7 @@ require_once __DIR__.'/templates/main_nav.php';
             </div>
 
         </main>
-<?php if (!IS_SPA()): ?>
+<?php if (!_is_spa()): ?>
     </div>
     <?php require_once __DIR__.'/templates/sidebar.php'; ?>
 </div>
