@@ -31,7 +31,7 @@ require_once __DIR__.'/templates/main_nav.php';
             id="loader"
             data-endpoint="/posts/by-alias/<?php out($user_alias) ?>"
             data-offset="15"
-            <?= count($posts) < 15 ? 'data-all_loaded="1"' : '' ?>
+            <?= isset($posts) && count($posts) < 15 ? 'data-all_loaded="1"' : '' ?>
             ></div>
         </main>
 <?php if (!_is_spa()): ?>
