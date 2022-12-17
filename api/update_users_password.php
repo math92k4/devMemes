@@ -32,8 +32,9 @@ try {
     $hased_password = password_hash($new_password, PASSWORD_DEFAULT);
 
     // Update password in db
-    $q = $db->prepare('CALL UPDATE_user_password (:password)');
+    $q = $db->prepare('CALL UPDATE_user_password (:password, :user_id)');
     $q->bindValue(':password', $hased_password);
+    $q->bindValue(':user_id', $user_id);
     $q->execute();
     _respond('Password updated', 200);
 
